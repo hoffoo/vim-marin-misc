@@ -7,6 +7,6 @@ function! Toggle80CharHilight()
 		match none
     else
 		let g:marin_hilighteightychars=1
-        match ErrorMsg '\%>80v.\+'
+		match ErrorMsg '\%>80v.\+'
     endif
 endfunction
