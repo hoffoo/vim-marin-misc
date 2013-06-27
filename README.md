@@ -5,3 +5,4 @@ Organized misc scripts ive found over time
 - Search for visual selections - search for entire visual block selected
 - Window Swap - mark window and swap
 - SaveSess/RestoreSess - convenient functions to save to a .session file in the current dir, can be bound to run automatically on exit/startup
+- MoveBracket - match end of the line { and move it down a new line taking care of whitespace
