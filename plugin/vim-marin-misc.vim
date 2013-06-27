@@ -3,13 +3,13 @@ nmap <silent> <leader>s :call MarkWindowSwap()<CR>
 nmap <silent> <leader>p :call DoWindowSwap()<CR>
 
 " http://stackoverflow.com/questions/235439/vim-80-column-layout-concerns
-let g:marin_hilighteightychars=0
+let s:marin_hilighteightychars=0
 function! Toggle80CharHilight()
-	if g:marin_hilighteightychars
-		let g:marin_hilighteightychars=0
+	if s:marin_hilighteightychars
+		let s:marin_hilighteightychars=0
 		match none
 	else
-		let g:marin_hilighteightychars=1
+		let s:marin_hilighteightychars=1
 		match ErrorMsg '\%>80v.\+'
 	endif
 endfunction
@@ -24,8 +24,36 @@ function! MoveFile(newspec)
 	exe 'sav' fnameescape(a:newspec)
 	call delete(old)
 endfunction
-
 command! -nargs=1 -complete=file -bar MoveFile call MoveFile('<args>')
+
+function! DuplicateFile()
+	let old = expand('%')
+	let path = expand('%:h')
+	let new = path . '/' .input('filename: ')
+	if (old == new)
+		return 0
+	endif
+	exe 'sav' fnameescape(new)
+endfunction
+command! -nargs=0 -bar DuplicateFile call DuplicateFile()
+
+function! RenameFile()
+	let old = expand('%')
+	let path = expand('%:h')
+	let new = path . '/' .input('new name: ')
+	if (old == new)
+		return 0
+	endif
+	exe 'sav' fnameescape(new)
+	call delete(old)
+endfunction
+command! -nargs=0 -bar RenameFile call RenameFile()
+
+function! DeleteFile()
+	call delete(expand('%'))
+	execute "normal! :q\<cr>"
+endfunction
+command! -nargs=0 -bar DeleteFile call DeleteFile()
 
 " save and restore session
 " http://stackoverflow.com/questions/5142099/auto-save-vim-session-on-quit-and-auto-reload-session-on-start
@@ -82,3 +110,8 @@ function! DoWindowSwap()
 	"Hide and open so that we aren't prompted and keep history
 	exe 'hide buf' markedBuf 
 endfunction
+
+function! MoveBracket()
+	execute "normal! /\\S\\s*\{\<cr>ld/{\<cr>i\<cr>"
+endfunction
+command! -nargs=0 -bar MoveBracket call MoveBracket()
